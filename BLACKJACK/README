@@ -1,0 +1,72 @@
+Este código segue as regras básicas de um jogo de BLACKJACK(21)
+
+Objetivo do Jogo:
+    Vencer o dealer tendo uma mão com valor mais próximo de 21 sem ultrapassar esse número.
+
+Valores das Cartas:
+    Cartas de 2 a 10 valem seu valor de face.
+
+    Valetes (J), Damas (Q) e Reis (K) valem 10 pontos.
+
+    Ás vale 1 ou 11, o que for mais vantajoso para o jogador.(Decisão é tomada automaticamente pelo código)
+
+Ações Possíveis do Jogador:
+    Pedir (HIT): Pegar mais uma carta.
+
+    Manter (STAND): Ficar com as cartas que tem.
+
+    Partir (SPLIT): Se tiver duas cartas do mesmo valor, dividir em duas mãos separadas.
+
+    Dobrar (DOUBLE DOWN): Dobrar a aposta e receber apenas mais uma carta.
+
+    Desitir: Encerrar jogo imediatamente e abandonar mesa
+
+
+Perde-se o Jogo se:
+    O total do jogador passa de 21 (“estourar”).
+
+    O dealer tem um total maior que o do jogador sem estourar.
+
+Como Vencer
+    Ter um total maior que o do dealer, sem passar de 21.
+
+    Se o dealer estourar (passar de 21), o jogador vence automaticamente.
+
+    Se o jogador fizer 21 com as duas primeiras cartas (um Ás + 10 ou figura), tem um Blackjack, (neste caso basta selecionar MANTER que o jogo está ganho).
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Interface de Jogo:
+    No terminal inicialmente será mostrado a mesa de jogo com as cartas na mao do dealer e as cartas na mão do jogador (Inicialmente o dealer só terá uma carta e o jogadore terá duas cartas).
+
+    Será mostrado as 5 ações possíveis de se realizar, sendo mostrado um aviso caso ocorra uma tentativa de realizar uma ação nao permitida naquele instante.
+
+    Caso seja realizado um Partir(SPLIT) as cartas na mão do jogador serão representadas separadamente. 
+
+    Após um Partir cada mão será jogada uma de cada vez
+
+    Após o fim do jogo será mostrado a mesa de jogo final com o resultado da partida logo em seguida.
+
+
+Condições Obrigatórias para Partir(SPLIT):
+    Para partir um jogo as cartas iniciais recebidas pelo jogador devem ser do mesmo número/figura.
+
+    Só é possível partir uma mão com apenas duas cartas (Código irá impedir caso contrário seja tentado).
+
+    O jogador deve possuir um saldo disponivel de valor igual ou superior a aposta atual.
+
+
+Condições Obrigatórias para Dobrar Aposta (DOUBLE DOWN):
+    O jogador só pode dobrar a aposta no inicio do jogo quando possui apenas duas cartas (Código irá impedir caso condição não seja cumprida).
+
+    O jogador deve possuir um saldo disponivel de valor igual ou superior a aposta atual (Código irá impedir caso condição não seja cumprida).
+
+
+Póssiveis Formas de Encerramento do Jogo:
+    O jogador pode selecionar a opção Desistir na interface assim encerrando sua partida.
+
+    O jogador, após uma rodada acabar e ser anunciado quem é o vencedor, pode optar por não continuar jogando (Será perguntado ao jogador no fim de cada rodada).
+
+    O jogo encerrará automaticamente caso o Saldo, inicialmente de 10.000€ (pré-definido), atinja o valor 0, ou seja, caso jogador venha a falir.
+
