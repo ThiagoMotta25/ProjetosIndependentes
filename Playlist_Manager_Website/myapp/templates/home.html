@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% block title %} Início {% endblock %}
+{% block content %}
+{% load static %}
+
+<style>/* Pedi ao ao Claude AI para fazer um overlay com a imagem de fundo */
+  body {
+    background: url("{% static 'soundwave.png' %}") no-repeat center center fixed;
+    background-size: cover; /* Faz preencher a página toda */
+  }
+  .overlay-content {
+    position: relative;
+    z-index: 1; /* Mantém conteúdo na frente da imagem */
+    text-align: center;
+    padding-top: 10%;
+  }
+</style>
+
+<div class="overlay-content">
+  <h1 class="display-4 text-white">Bem-vindo!</h1>
+  <a class="btn btn-primary btn-lg" href="{% url 'musicas' %}" role="button">Ver Músicas</a>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+{% endblock %}

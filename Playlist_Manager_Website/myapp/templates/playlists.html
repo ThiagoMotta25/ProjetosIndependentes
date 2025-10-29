@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %} Playlists{% endblock %}
+{% block content%}
+{% load static %}
+
+<h3 class="text-center">Suas Playlists</h3><br>
+<table class="table table-striped" id="tabela-musicas">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Nº de musicas</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for playlist in playlists%}
+        <tr>
+            <td>{{playlist.nome}}</td>
+            {% for id, num in num_musicas.items %}
+                {% if playlist.id == id %}
+                    <td>{{num}}</td>
+                {% endif %}
+            {% empty %}
+                <td>0</td>
+            {% endfor %}
+            <td>  <a class="btn btn-info" href="{% url 'playlist_detalhe' playlist.id %}">Ver Lista de Musicas</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<button class="btn btn-primary" data-toggle="modal" data-target="#playlistModal">Criar Nova Playlist</button><br>
+<!------------------------------Modal de criar playlist------------------------------>
+
+<div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="playlistModalLabel">Criar Nova Playlist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="nome">Nome da Playlist</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome da Playlist">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Criar Playlist</button>
+        </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

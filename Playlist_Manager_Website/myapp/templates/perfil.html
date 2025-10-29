@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %} Perfil {% endblock %}
+{% block content%}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>Perfil de Usuario</h1>
+        </div>  
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <figure class="figure">
+            <img src="{% url 'foto_perfil' usuario.id_usuario %}" class="figure-img img-fluid rounded" alt="Foto de Perfil" usemap="#perfil" width="200" height="200">
+            <map name="perfil">
+              <area shape="rect" coords="0,0,200,200" alt="Foto de Perfil" data-toggle="modal" data-target="#fotoModal">
+            </map>
+            </figure>
+        </div>
+        <div class="col-md-8">
+            <p><strong>ID: </strong>{{usuario.id_usuario}}</p>
+            <p><strong>Nome: </strong>{{usuario.nome}}</p>
+            <p><strong>Email: </strong>{{usuario.email}}</p>
+            <p><strong>Número de Playlists Associadas: </strong>{{num_playlists.0}}</p>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#perfilModal">Editar Perfil</button>
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Eliminar Conta</button>
+
+<!------------------------------Modal de editar foto de perfil------------------------------>
+
+<div class="modal fade" id="fotoModal" tabindex="-1" role="dialog" aria-labelledby="fotoModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="fotoModalLabel">Foto de Perfil</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body text-center">
+          <figure class="figure">
+            <img src="{% url 'foto_perfil' usuario.id_usuario %}" class="figure-img img-fluid rounded" alt="Foto de Perfil" usemap="#perfil2" width="200" height="200">
+            <map name="perfil2">
+              <area shape="rect" coords="0,0,200,200" alt="Foto de Perfil" href="/foto_perfil/{{ usuario.id_usuario }}">
+            </map>
+          </figure>
+          <div class="form-group">
+            <label for="foto">Escolha uma nova foto de perfil</label>
+            <input type="file" class="form-control-file" id="foto" name="foto">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Foto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!------------------------------Modal de editar perfil------------------------------>
+
+<div class="modal fade" id="perfilModal" tabindex="-1" role="dialog" aria-labelledby="perfilModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="perfilModalLabel">Editar Perfil</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ usuario.nome }}">
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ usuario.email }}">
+          </div>
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" class="form-control" id="senha" name="senha" value="{{ usuario.senha }}">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar alterações</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!------------------------------Modal de deletar conta------------------------------>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Confirmar exclusão</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        Tem certeza que deseja <strong>deletar sua conta</strong>?  
+        Esta ação não pode ser desfeita!
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        
+        <!-- Formulário para deletar -->
+        <form method="get">
+          {% csrf_token %}
+          <input type="hidden" name="id_usuario" value="{{ usuario.id_usuario }}">
+          <a href="?delete=true" class="btn btn-danger">Deletar Conta</a>   <!--"?delete=true" é usado para identificar a ação de deletar no backend -->
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block title %} Músicas {% endblock %}
+{% block content %}
+{% load static %}
+
+{% if messages %}
+    <ul>
+      {% for message in messages %}
+            <li class="alert alert-danger">{{ message }}</li>
+      {% endfor %}
+    </ul>
+{% endif %}
+
+<h1>Músicas na BD</h1>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" id="pesquisa" name="pesquisa" value="{{ pesquisa }}" placeholder="Pesquisar música/artista">
+</form>
+
+<form method="post" id="formPlaylist">
+    {% csrf_token %}
+    
+    <div class="text-right mb-3">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#playlistModal">
+            Adicionar Selecionadas à Playlist
+        </button>
+    </div>
+
+    <table class="table table-striped" id="tabela-musicas">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Artista</th>
+                <th>Album</th>
+                <th>Ano Lançamento</th>
+                <th>Adicionar Música à Playlist</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for musica in musicas %}
+            <tr>
+                <td>{{ musica.nome }}</td>
+                <td>{{ musica.artista }}</td>
+                <td>{{ musica.album }}</td>
+                <td>{{ musica.ano }}</td>
+                <td class="text-center"><input type="checkbox" name="id_musica" value="{{ musica.id }}"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- MODAL ÚNICO - FORA DO LOOP -->
+    <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="playlistModalLabel">
+                        Adicionar à Playlist
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <label for="playlistSelect">Selecione a Playlist:</label>
+                    <select class="form-control" name="id_playlist" id="playlistSelect" required>
+                        {% for playlist in playlists %}
+                            <option value="{{ playlist.id }}">{{ playlist.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- JavaScript para filtro dinâmico -->
+<script>
+const input = document.getElementById('pesquisa');
+const tabela = document.getElementById('tabela-musicas').getElementsByTagName('tbody')[0];
+
+input.addEventListener('input', function() {
+    const termo = input.value.toLowerCase();
+    const linhas = tabela.getElementsByTagName('tr');
+
+    for (let i = 0; i < linhas.length; i++) {
+        const nome = linhas[i].cells[0].textContent.toLowerCase();
+        const artista = linhas[i].cells[1].textContent.toLowerCase();
+
+        if (nome.includes(termo) || artista.includes(termo)) {
+            linhas[i].style.display = '';
+        } else {
+            linhas[i].style.display = 'none';
+        }
+    }
+});
+</script>
+{% endblock %}

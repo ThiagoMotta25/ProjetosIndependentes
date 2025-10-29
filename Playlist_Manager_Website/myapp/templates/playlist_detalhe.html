@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %} {{ playlist.1 }} {% endblock %}  {# playlist[1] = nome #}
+
+{% block content %}
+<h1>Playlist: {{ playlist.1 }}</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Artista</th>
+      <th>Álbum</th>
+      <th>Ano</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for musica in musicas %}
+    <tr>
+      <td>{{ musica.nome }}</td>
+      <td>{{ musica.artista }}</td>
+      <td>{{ musica.album }}</td>
+      <td>{{ musica.ano }}</td>
+      <td>
+        <form method="post">
+          <input type="hidden" name="remove_musica" value="{{ musica.id }}">
+          <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+          {% csrf_token %}
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4">Nenhuma música nesta playlist.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<form method="get">
+  <a class="btn btn-primary" id="musicas" href="/musicas">Adicionar Música</a>
+  {% csrf_token %}
+  <input type="hidden" name="id_playlist" value="{{ playlist.0 }}">
+  <a href="?delete=true" class="btn btn-danger">Deletar Playlist</a>   <!--"?delete=true" é usado para identificar a ação de deletar no backend -->
+</form>
+
+{% endblock %}
